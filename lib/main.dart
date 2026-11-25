@@ -113,44 +113,20 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
               SizedBox(height: 9),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: search,
-                      onChanged: (value) async {
-                        await handleSearch();
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Note title",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9),
-                        ),
-                      ),
-                    ),
+
+              TextField(
+                controller: search,
+                onChanged: (value) async {
+                  await handleSearch();
+                },
+                decoration: InputDecoration(
+                  hintText: "Note title",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(9),
                   ),
-                  SizedBox(width: 6),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await handleSearch();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16,
-                        horizontal: 12,
-                      ),
-                      backgroundColor: Colors.orange,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadiusGeometry.circular(9),
-                      ),
-                    ),
-                    child: Text("Search"),
-                  ),
-                ],
+                ),
               ),
+
               Expanded(
                 child: ListView.builder(
                   itemCount: allNotes.length,

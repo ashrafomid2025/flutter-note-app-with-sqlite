@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:note_app/db/database-helper.dart';
 import 'package:note_app/home_page.dart';
 import 'package:note_app/main.dart';
+import 'package:note_app/pages/update-note.dart';
 
 class NoteDeatials extends StatefulWidget {
   final Map<String, dynamic> note;
@@ -36,7 +37,14 @@ class _NoteDeatialsState extends State<NoteDeatials> {
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: MaterialButton(
-              onPressed: deleteSingleNote,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UpdateNote(note: widget.note),
+                  ),
+                );
+              },
               child: Icon(Icons.edit),
             ),
           ),
