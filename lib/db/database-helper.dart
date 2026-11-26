@@ -45,8 +45,18 @@ class DatabaseHelper {
     final db = await database;
     return await db.query(
       "notes",
-      where: 'LOWER(title) LIKE LOWER(?)',
+      where: 'LOWER(title) OR LOWER(description) LIKE LOWER(?)',
       whereArgs: ['%$searchText%'],
+    );
+  }
+
+  Future<void> UpdateNote(int id, String Title, String description) async {
+    final db = await database;
+    await db.update(
+      "notes",
+      {"title": Title, "description": description},
+      where: "id = ?",
+      whereArgs: [id],
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/db/database-helper.dart';
+import 'package:note_app/main.dart';
 
 class UpdateNote extends StatefulWidget {
   final Map<String, dynamic> note;
@@ -9,21 +11,38 @@ class UpdateNote extends StatefulWidget {
 
 class _UpdateNoteState extends State<UpdateNote> {
   final _formKey = GlobalKey<FormState>();
+  final database = DatabaseHelper();
 
-  final TextEditingController _titleController = TextEditingController(
-    text: widget.note["title"],
-  );
-  final TextEditingController _descriptionController = TextEditingController(
-    text: note["desciption"],
-  );
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.note["title"]);
+    _descriptionController = TextEditingController(
+      text: widget.note["description"],
+    );
+  }
+
   Future<void> submitform() async {
-    if (_formKey.currentState!.validate()) {}
+    if (_formKey.currentState!.validate()) {
+      await database.UpdateNote(
+        widget.note["id"],
+        _titleController.text.trim(),
+        _descriptionController.text.trim(),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Update'),
+        backgroundColor: Colors.orange,
+        foregroundColor: Colors.white,
+      ),
       body: Column(
         children: [
           Padding(
@@ -39,7 +58,6 @@ class _UpdateNoteState extends State<UpdateNote> {
                     children: [
                       TextFormField(
                         controller: _titleController,
-
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey.shade600),
@@ -83,9 +101,17 @@ class _UpdateNoteState extends State<UpdateNote> {
                       ),
                       SizedBox(height: 12),
                       ElevatedButton(
-                        onPressed: submitform,
-                        child: Text("Save"),
+                        onPressed: () async {
+                          await submitform();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyApp()),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(9),
+                          ),
                           backgroundColor: Colors.blue,
                           foregroundColor: Colors.white,
                           padding: EdgeInsets.symmetric(
@@ -93,6 +119,7 @@ class _UpdateNoteState extends State<UpdateNote> {
                             vertical: 12,
                           ),
                         ),
+                        child: Text("Update"),
                       ),
                     ],
                   ),
